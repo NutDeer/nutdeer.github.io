@@ -1,0 +1,204 @@
+{% extends "index.html" %}
+
+{% block main %}
+<article class="post-single">
+  <header class="post-header">
+      <h1 class="post-title">{{ page.title }}</h1>
+      {% if page.description %}
+      <div class="post-description">
+          {{ page.description }}
+      </div>
+      {% endif %}
+      {% if config.extra.cela.show_post_meta | default(value=true) %}
+      <!-- <div class="post-meta">
+      {% include "partials/post/post_meta.html" %}
+      {% if config.extra.cela.show_post_edit_button %}
+          {% include "partials/post/post_edit.html" %}
+      {% endif %}
+      </div> -->
+        <div class="post-meta">
+                {{ page.date | date(format="%Y 年 %-m 月 %-d 日") }} 
+                
+                | 预计阅读时间 {{ page.reading_time }} min 
+                
+                {% if page.extra.github %}
+                    | <a href="{{ page.extra.github }}" target="_blank" style="text-decoration: underline;">查看 GitHub 代码</a>
+                {% endif %}
+            </div>
+        {% endif %}
+        
+        {% if page.taxonomies.tags %}
+        <ul class="post-tags">
+            {% for tag in page.taxonomies.tags %}
+            {% set tag_url = get_taxonomy_url(kind="tags", name=tag, lang=page.lang) %}
+            <li><a href="{{ tag_url }}">{{ tag }}</a></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+  </header>
+
+  {% if config.extra.cela.show_toc | default(value=true) %}
+  {% include "partials/post/post_toc.html" %}
+  {% endif %}
+
+  {% if page.content %}
+  <div class="post-content">
+      {{ page.content | safe }}
+  </div>
+  {% endif %}
+
+  <footer class="post-footer">
+
+    {% if config.extra.cela.show_post_nav_links | default(value=true) %}
+    {% include "partials/post/post_nav_links.html" %}
+    {% endif %}
+    {# TODO #}
+    {#- if (and site.Params.ShowShareButtons (ne .Params.disableShare true)) }}
+    {{- partial "share_icons.html" . -}}
+    {{- end #}
+  </footer>
+
+</article>
+
+<style>
+/* === 修正 1：右侧小标题（ToC）绝对定位与无滚动条 === */
+@media screen and (min-width: 1200px) {
+    /* 关键：给整个文章容器加上相对定位，这样 ToC 才能以它为基准对齐！ */
+    .post-single { 
+        position: relative; 
+    }
+
+    .toc {
+        /* absolute 会让目录依附于 .post-single，随着你往下读，它也会自然往上滚走 */
+        position: absolute !important; 
+        
+        /* 【垂直高度调整】：0px 代表与正文的绝对最顶部齐平。想往下挪就改成 50px、100px */
+        top: 0px !important; 
+        
+        /* 【水平位置调整】：50% 是文章中心，+380px 是往右挪到空白处。觉得太远可以改成 +350px */
+        left: calc(50% + 380px) !important; 
+        
+        width: 250px !important;
+        
+        /* 彻底干掉滚动条，让它全部展开 */
+        max-height: none !important;
+        overflow: visible !important; 
+        
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+    }
+
+    /* 隐藏所有残余的浏览器滚动条 */
+    .toc::-webkit-scrollbar { display: none !important; }
+    .toc { -ms-overflow-style: none !important; scrollbar-width: none !important; }
+
+    /* 保留你喜欢的抹茶色交互效果 */
+    .toc-sticky { border-left: 2px solid var(--border); padding-left: 15px; }
+    .toc-item a, .toc-item-child a {
+        cursor: pointer !important; box-shadow: none !important; border-bottom: 1px solid transparent !important;
+        text-decoration: none !important; display: inline-block; margin-bottom: 8px; transition: all 0.2s ease; line-height: 1.4;
+    }
+    .toc-item a { font-weight: 600 !important; color: var(--secondary) !important; opacity: 0.8; font-size: 0.85rem !important; }
+    .toc-item-child a { font-weight: 400 !important; color: var(--secondary) !important; opacity: 0.6; font-size: 0.8rem !important; padding-left: 12px; }
+    .toc-item a:hover, .toc-item-child a:hover { color: #7a9387 !important; opacity: 1; transform: translateX(2px); border-bottom: 1px solid #8ba89a !important; }
+}
+@media screen and (max-width: 1199px) { .toc { display: none !important; } }
+
+/* === 1. Lilian Weng 风格标签框 === */
+.post-tags {
+    margin: 11px 0 -14px 0 !important; /* 调整和上面日期、下面正文的间距 */
+    padding: 0;
+    list-style: none;
+    display: flex;
+    gap: 10px; /* 标签之间的间距 */
+    flex-wrap: wrap;
+}
+.post-tags li a {
+    display: inline-flex !important; 
+    align-items: center !important;
+    justify-content: center !important;   /* 确保水平也绝对居中 */
+    line-height: normal !important;       /* 恢复正常的行高 */
+    padding: 4px 12px !important;         /* 上下 padding 改小一点点，因为行高恢复了 */
+    
+    background-color: #e1e4e8 !important; 
+    border: 1px solid #e1e4e8 !important; 
+    color: #586069 !important;            
+    border-radius: 4px !important;        
+    font-size: 13px !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease !important;
+}
+.post-tags li a:hover {
+    background-color: #e1e4e8 !important;
+    border-color: #d1d5da !important;
+    color: #24292e !important;
+}
+
+/* 夜间模式稍微反转一下颜色，避免亮瞎眼 */
+body.dark .post-tags li a {
+    background-color: #24292e !important;
+    border-color: #444d56 !important;
+    color: #d1d5da !important;
+}
+
+/* === 2. 底部上下篇导航样式：紧凑自适应版 === */
+.paginav {
+    display: flex;
+    /* 改为靠两端对齐，但子元素不再强制平分宽度 */
+    justify-content: space-between; 
+    margin: 20px 0 !important;
+    padding: 0 !important;
+    border-top: 1px solid var(--border);
+    background: transparent !important;
+}
+
+/* 核心：宽度自适应，设置最大宽度防止文字太长撑满整行 */
+.paginav a {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 18px !important; /* 稍微缩减内边距，更显精致 */
+    text-decoration: none !important;
+    border-radius: 8px;
+    transition: background 0.3s ease; /* 移除 transform 过渡 */
+    
+    /* 关键：让宽度随内容变化，同时限制最大宽度 */
+    max-width: 45%; 
+    flex: 0 1 auto; 
+}
+
+/* 占位符也需要保持自适应 */
+.empty-nav {
+    flex: 0 1 auto;
+    width: 0; 
+}
+
+/* 交互：取消上浮效果，只保留背景变色 */
+.paginav a:hover {
+    background-color: var(--border) !important;
+    /* 已删除 transform: translateY(-2px) */
+}
+
+.paginav a.prev { align-items: flex-start; text-align: left; }
+.paginav a.next { align-items: flex-end; text-align: right; }
+
+.paginav .nav-label {
+    font-size: 13px;
+    color: #888 !important;
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+.paginav .nav-title {
+    font-size: 15px; /* 稍微调小一点点，视觉上更紧凑 */
+    color: var(--primary) !important;
+    font-weight: 600;
+    line-height: 1.4;
+    /* 允许长文字换行 */
+    word-break: break-word;
+}
+
+</style>
+
+{% endblock %}
