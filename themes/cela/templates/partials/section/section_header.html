@@ -60,21 +60,43 @@
     {% endif %}
   </nav>
 
+</header>
+
 <style>
+/* --- 左上角 Logo 悬停变色 --- */
+.custom-logo {
+    font-weight: 800 !important;
+    font-size: 24px;
+    color: var(--primary) !important;
+    text-decoration: none !important;
+    transition: color 0.3s ease;
+    display: inline-block;
+}
+.custom-logo:hover {
+    color: #8ba89a !important; 
+}
+
 /* 强制清除主题自带的老旧下划线 */
 #menu .active { border-bottom: none !important; }
+
+/* --- 核心修改：干掉点击时闪烁的默认轮廓框 --- */
+#menu a.nav-link:focus, 
+#menu a.nav-link:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
 
 /* 核心修改：让 <a> 内部的 <span> 作为相对定位的基准，精准包裹文字 */
 #menu a.nav-link span {
     position: relative;
-    /* 👇 现在这里改数字就能完美控制距离了！2px非常贴合，想要再近就 0 或 1px */
+    /* 2px非常贴合，想要再近就 0 或 1px */
     padding-bottom: 2px; 
     display: inline-block;
 }
 
 /* 1. 当前所在板块文字样式 */
 #menu a.nav-link.active {
-    /* 👇 从 800 改成 600（半粗体），变粗效果会更自然不突兀 */
+    /* 从 800 改成 600（半粗体），变粗效果会更自然不突兀 */
     font-weight: 600 !important; 
     color: var(--primary) !important; 
 }
@@ -100,21 +122,35 @@
     transition: background-color 0.2s ease;
 }
 
+/* ==========================================
+   终极修复：消灭所有点击时产生的“幽灵输入框”
+   ========================================== */
 
-/* ========================================= */
-/* 2. 隐藏页面自带的冗余元素                 */
-/* ========================================= */
-
-/* 隐藏左上角 "Home" 面包屑导航 */
-.breadcrumbs {
-    display: none !important;
+/* 1. 杀掉浏览器自带的点击高亮色块（最像“输入框”的元凶） */
+a, button, #menu a, .logo-switches, .logo-switches button, .logo-switches span {
+    -webkit-tap-highlight-color: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
 }
 
-/* 隐藏大标题右侧的 广播(RSS) SVG 图标 */
-.page-header h1 a svg,
-.post-header h1 a svg {
-    display: none !important;
+/* 2. 彻底禁止导航栏、开关区域的文字被选中（防止鼠标误触产生文本选区） */
+.header, #menu, .logo-switches {
+    user-select: none !important;
+    -webkit-user-select: none !important;
 }
+
+/* 3. 核心：让右侧导航像 Logo 一样，剥光多余的内边距，让点击区域死死抱住文字 */
+#menu a.nav-link {
+    display: inline-block !important; /* 像 Logo 一样独立成块 */
+    padding: 0 !important; /* 强制干掉主题默认的点击留白 */
+    margin: 0 12px; /* 用不可点击的外边距(Margin)来保持排版间距 */
+    background-color: transparent !important; /* 防止主题自带的点击背景色浮现 */
+}
+
+/* 4. 针对小月亮右侧的 "|" 符号区域，防止点击背景变色 */
+.logo-switches button:focus,
+.logo-switches button:active {
+    background-color: transparent !important;
+}
+
 </style>
-
-</header>
