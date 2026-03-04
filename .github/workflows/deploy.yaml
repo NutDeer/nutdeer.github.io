@@ -2,7 +2,11 @@ name: Deploy Zola site to Pages
 
 on:
   push:
-    branches: [ main ] # 只要你把代码推送到 main 分支就会触发
+    branches: [ main ]
+
+# --- 新增：强制声明权限，防止因为 GitHub 默认设置导致失败 ---
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -11,12 +15,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          submodules: true # 关键：这一步会拉取你的 Cela 主题
+          submodules: true # 必须保留，因为你的主题是子模块
 
       - name: Build and deploy
         uses: shalzz/zola-deploy-action@master
         env:
-          # 生成的静态网页会放到 gh-pages 分支
           PAGES_BRANCH: gh-pages
           BUILD_DIR: public
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
