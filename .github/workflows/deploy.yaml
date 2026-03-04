@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
 
-# --- 新增：强制声明权限，防止因为 GitHub 默认设置导致失败 ---
+# 给 Actions 增加显式的写权限
 permissions:
   contents: write
 
@@ -15,7 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          submodules: true # 必须保留，因为你的主题是子模块
+          submodules: true # 必须有这一行，否则你的主题文件夹是空的
 
       - name: Build and deploy
         uses: shalzz/zola-deploy-action@master
