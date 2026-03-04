@@ -1,0 +1,16 @@
+name: Deploy Zola site to Pages
+on:
+  push:
+    branches: [ main ]  # 确保这里是你仓库的主分支名
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - checkout:
+        uses: actions/checkout@v4
+      - name: Build and deploy
+        uses: shalzz/zola-deploy-action@master
+        env:
+          PAGES_BRANCH: gh-pages
+          BUILD_DIR: public
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
