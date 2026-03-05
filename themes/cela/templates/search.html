@@ -30,13 +30,13 @@
 {% endif %}
 
 <section class="post-single search-page">
-  <header class="post-header">
+  <header class="post-header-search">
     <div class="breadcrumbs">
       <a href="{{ config.base_url }}">Home</a>&nbsp;»&nbsp;
       <a href="{{ current_url | default(value=config.base_url ~ '/search/') }}">{{ search_title }}</a>
     </div>
     <h1 class="post-title">{{ search_title }}</h1>
-    <p class="post-description">{{ search_description }}</p>
+    <p class="post-description-search">{{ search_description }}</p>
   </header>
 
   <article class="search-entry">
