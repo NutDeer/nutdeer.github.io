@@ -105,35 +105,49 @@ a, button, #menu a, .logo-switches, .logo-switches button, .logo-switches span {
 }
 
 /* ==========================================
-   全站各大板块标题 (Logs, Search, Tags, Notes 等) 高度与排版统一
+   全站各大板块标题 (Logs, Search, Tags) 高度统一，但对齐分离
    ========================================== */
 
-/* 抓取所有页面的头部容器，强制统一上下间距和对齐方式 */
+/* 1. 强制统一所有页面的上下间距和宽度（保留完美高度） */
 .page-header,
 .post-header,
 .taxonomy-header,
 .taxonomy-list-entry .taxonomy-header {
     margin-top: 40px !important;
     margin-bottom: 40px !important;
-    text-align: right !important; /* 如果你想让所有标题都像 Logs 一样靠右，保留这行。如果想全靠左，改成 left */
     display: block !important;
     width: 100% !important;
 }
 
-/* 强制统一所有大标题的字号和粗细 */
+/* 2. 强制统一所有大标题的字号和粗细（保留 40px 视觉量级） */
 .page-header h1,
 .post-header h1.post-title,
 .taxonomy-header h1 {
     font-size: 40px !important;
     font-weight: bold !important;
-    margin: 0 !important; /* 清除默认的段落边距，防止高度不可控 */
+    margin: 0 !important; 
     line-height: 1.2 !important;
 }
 
-/* 针对 Search 页面下面的那句描述小字，稍微调整一下间距 */
+/* ==========================================
+   3. 核心：精准控制不同板块的对齐方式
+   ========================================== */
+
+/* 👉 让 Tags (标签) 页面专属居中 */
+.taxonomy-header,
+.taxonomy-list-entry .taxonomy-header {
+    text-align: center !important; 
+}
+
+/* 👉 Search 等其他普通板块默认靠右 */
+.post-header {
+    text-align: center !important;
+}
+
+/* Search 页面下面的描述小字，跟随大标题靠右 */
 .post-description {
-    margin-top: 10px !important; /* 离大标题稍微远一点 */
+    margin-top: 10px !important; 
     font-size: 16px !important;
     color: var(--secondary) !important;
-    text-align: right !important; /* 跟随大标题的对齐方式 */
+    text-align: center !important; 
 }
