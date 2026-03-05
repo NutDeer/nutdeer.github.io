@@ -105,27 +105,35 @@ a, button, #menu a, .logo-switches, .logo-switches button, .logo-switches span {
 }
 
 /* ==========================================
-   Search 搜索页面排版调整
+   全站各大板块标题 (Logs, Search, Tags, Notes 等) 高度与排版统一
    ========================================== */
 
-/* 让大标题居中 */
-.page-header h1, 
-.search-header h1 {
-    text-align: center !important;
+/* 抓取所有页面的头部容器，强制统一上下间距和对齐方式 */
+.page-header,
+.post-header,
+.taxonomy-header,
+.taxonomy-list-entry .taxonomy-header {
+    margin-top: 40px !important;
+    margin-bottom: 40px !important;
+    text-align: right !important; /* 如果你想让所有标题都像 Logs 一样靠右，保留这行。如果想全靠左，改成 left */
+    display: block !important;
+    width: 100% !important;
 }
 
-/* 让搜索输入框和提示文字居中 */
-.search-container, 
-.search-form,
+/* 强制统一所有大标题的字号和粗细 */
+.page-header h1,
+.post-header h1.post-title,
+.taxonomy-header h1 {
+    font-size: 40px !important;
+    font-weight: bold !important;
+    margin: 0 !important; /* 清除默认的段落边距，防止高度不可控 */
+    line-height: 1.2 !important;
+}
+
+/* 针对 Search 页面下面的那句描述小字，稍微调整一下间距 */
 .post-description {
-    text-align: center !important;
-    margin: 0 auto !important; 
-    display: block;
-}
-
-/* 如果你想让输入框里的光标和占位符（Placeholder）也居中，可以加上这个 */
-#searchInput, 
-.search-input {
-    text-align: center !important;
-    margin: 0 auto !important;
+    margin-top: 10px !important; /* 离大标题稍微远一点 */
+    font-size: 16px !important;
+    color: var(--secondary) !important;
+    text-align: right !important; /* 跟随大标题的对齐方式 */
 }

@@ -2,7 +2,7 @@
 {% block main %}
 {% if not title %}
   {% set title = taxonomy.name | replace(from="_",to=" ") | title %}
-	{% set css_class = "terms-" ~ taxonomy.name %}
+    {% set css_class = "terms-" ~ taxonomy.name %}
 {% endif %}
 
 {% include "partials/taxonomy/list_header.html" %}
@@ -14,7 +14,6 @@
     </li>
     {% endfor %}
 </ul>
-{% endblock %}
 
 <style>
 /* 统一下方的标签布局 */
@@ -24,7 +23,13 @@
     gap: 12px; /* 标签之间的间距 */
     padding: 0;
     list-style: none;
-    margin-top: 20px;
+    
+    /* 👇 核心修改：强制限制最大宽度并居中对齐 */
+    max-width: 720px !important; /* 强制限制为阅读正文宽度 */
+    margin: 40px auto 0 auto !important; /* 强制居中，与上方标题拉开 40px 间距 */
+    
+    /* 可选：如果你希望标签也像标题一样整体靠右排布，可以取消下面这行的注释 */
+    /* justify-content: flex-end !important; */
 }
 
 .terms-tags li {
@@ -72,3 +77,5 @@ body.dark .terms-tags li a {
     color: #d1d5da !important;
 }
 </style>
+
+{% endblock %}
