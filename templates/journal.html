@@ -20,8 +20,28 @@ body.dark {
     --cal-study: #d4bb89;    
 }
 
-.journal-container { margin-top: 20px; }
-.view-switches { margin-bottom: 30px; display: flex; gap: 15px; justify-content: center; align-items: center; }
+/* === 容器与顶部按钮对齐控制 === */
+/* 1. 让最外层容器不再带有默认的 20px，避免双重叠加 */
+.journal-container { margin-top: 0; }
+
+/* 2. 核心：让控制按钮占据和 Logs 大标题一样的高度和位置 */
+.view-switches { 
+    /* 上边距 40px，下边距 40px，完美复刻 Logs 标题的垂直空间占位 */
+    margin-top: 40px; 
+    margin-bottom: 40px; 
+    display: flex; 
+    gap: 15px; 
+    justify-content: right; /* 如果你想让按钮靠右（像Logs一样），用 right；居中用 center；靠左用 flex-start */
+    align-items: center; 
+    min-height: 48px; /* 撑起高度，确保和 40px 字体的 Logs 标题物理高度差不多 */
+}
+
+/* === 限制下方内容的宽度与居中（和 Tags 标签保持一致） === */
+#calendar-view, #timeline-view {
+    max-width: 720px; /* 和 Tags 保持相同的正文隐形框宽度 */
+    margin: 0 auto;   /* 强制水平居中 */
+}
+
 .view-switches button {
     padding: 8px 20px; background: var(--tertiary); color: var(--primary);
     border: 1px solid var(--border); border-radius: 6px; cursor: pointer;
